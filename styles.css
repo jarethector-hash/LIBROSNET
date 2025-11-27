@@ -1,0 +1,252 @@
+/* Fondo general */
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+/* Contenedor centrado */
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 20px;
+}
+
+/* Tarjeta estilo Instagram */
+.post {
+    background: #000;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Header */
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.info {
+    margin-left: 10px;
+    flex-grow: 1;
+}
+
+.username {
+    margin: 0;
+    font-weight: bold;
+}
+
+.time {
+    margin: 0;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.menu {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Imagen */
+.post-image img {
+    width: 100%;
+    display: block;
+}
+
+/* Iconos */
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    font-size: 28px;
+}
+
+.post-actions i {
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.post-actions i:last-child {
+    margin-right: 0;
+}
+
+/* Descripción */
+.post-description {
+    padding: 0 12px 12px 12px;
+    font-size: 15px;
+}
+
+/* ==== SIDEBAR IZQUIERDA ==== */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 230px;
+    height: 100vh;
+    background: #000;
+    padding-top: 30px;
+    border-right: 1px solid #222;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Cada botón */
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+}
+
+.menu-item i {
+    font-size: 25px;
+    margin-right: 15px;
+}
+
+/* Texto */
+.menu-item span {
+    font-size: 17px;
+}
+
+/* Hover */
+.menu-item:hover {
+    background: #111;
+}
+
+/* Opción activa */
+.menu-item.active {
+    font-weight: bold;
+}
+
+/* Badge de notificaciones */
+.badge {
+    position: absolute;
+    left: 33px;
+    top: 5px;
+    background: #ff3040;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+/* ==== SIDEBAR DERECHA ==== */
+.right-sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 340px;
+    height: 100vh;
+    background: #000;
+    padding: 25px 20px;
+    color: #fff;
+    overflow-y: auto;
+}
+
+/* Perfil arriba */
+.profile-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.profile-box img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+}
+
+.profile-box .username {
+    margin: 0;
+    font-weight: bold;
+}
+
+.profile-box .subtext {
+    margin: 0;
+    color: #999;
+    font-size: 13px;
+}
+
+.change {
+    color: #429cff;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Sugerencias */
+.suggestions-title {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.suggestions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Cada sugerencia */
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.suggestion-item img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.suggestion-item .username {
+    margin: 0;
+    font-weight: bold;
+}
+
+.suggestion-item .subtext {
+    margin: 0;
+    font-size: 13px;
+    color: #999;
+}
+
+.follow-btn {
+    color: #429cff;
+    cursor: pointer;
+    font-size: 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.logo-box {
+    width: 100%;
+    padding-left: 20px;
+    margin-bottom: 25px;
+}
+
+.logo-box img {
+    width: 175px; /* Ajusta el tamaño del logo */
+    filter: invert(1); /* Si tu logo es negro lo vuelve blanco */
+    cursor: pointer;
+}

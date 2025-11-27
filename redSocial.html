@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post estilo Instagram</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+    <div class="post">
+
+        <!-- ENCABEZADO -->
+        <div class="post-header">
+            <img src="https://i.pravatar.cc/80?img=12" class="avatar">
+            <div class="info">
+                <p class="username">mole82</p>
+                <p class="time">20 h</p>
+            </div>
+            <i class="ri-more-fill menu"></i>
+        </div>
+
+        <!-- IMAGEN -->
+        <div class="post-image">
+            <img src="https://via.placeholder.com/800x1000" alt="Post">
+        </div>
+
+        <!-- ICONOS -->
+        <div class="container">
+            <!-- Compose -->
+            <div style="padding: 12px; border-bottom: 1px solid #ddd;">
+                <select id="currentUser"></select>
+                <select id="friendToAdd"></select>
+                <button onclick="addFriend()">Agregar amigo</button>
+                <input id="newPostText" placeholder="¿Qué estás pensando?" style="width:60%"> 
+                <input id="newPostImg" placeholder="Imagen URL (opcional)">
+                <button onclick="createPost()">Publicar</button>
+            </div>
+
+            <!-- Search & Sort -->
+            <div style="padding: 8px; border-bottom: 1px solid #ddd;">
+                <input id="searchBox" placeholder="Buscar usuarios o publicaciones..." style="width:50%">
+                <button onclick="doSearch()">Buscar</button>
+                <select id="sortSelect" onchange="loadFeed()">
+                    <option value="recent">Recientes</option>
+                    <option value="reactions">Reacciones</option>
+                    <option value="comments">Comentarios</option>
+                </select>
+            </div>
+
+            <!-- Feed -->
+            <div id="feed"></div>
+        </div>
+    <div class="menu-item">
+        <i class="ri-messenger-line"></i>
+        <span>Mensajes</span>
+        <span class="badge">5</span>
+    </div>
+
+    <div class="menu-item">
+        <i class="ri-heart-line"></i>
+        <span>Notificaciones</span>
+    </div>
+
+    <div class="menu-item">
+        <i class="ri-add-line"></i>
+        <span>Crear</span>
+    </div>
+
+    <div class="menu-item">
+        <i class="ri-user-3-line"></i>
+        <span>Perfil</span>
+    </div>
+</div>
+
+<div class="right-sidebar">
+
+    <!-- TU PERFIL -->
+    <div class="profile-box">
+        <img src="https://i.pravatar.cc/80?img=14" class="profile-photo">
+        <div>
+            <p class="username">jaret_mendz</p>
+            <p class="subtext">Jaret Mendez</p>
+        </div>
+        <a href="#" class="change">Cambiar</a>
+    </div>
+
+    <!-- SUGERENCIAS -->
+    <p class="suggestions-title">Sugerencias para ti</p>
+
+    <div class="suggestions-list">
+
+        <div class="suggestion-item">
+            <img src="https://i.pravatar.cc/80?img=3">
+            <div>
+                <p class="username">xochitlfidel</p>
+                <p class="subtext">Te sigue + 2 amigos más</p>
+            </div>
+            <a class="follow-btn">Seguir</a>
+        </div>
+
+        <div class="suggestion-item">
+            <img src="https://i.pravatar.cc/80?img=7">
+            <div>
+                <p class="username">erikdela434</p>
+                <p class="subtext">Sugerencia para ti</p>
+            </div>
+            <a class="follow-btn">Seguir</a>
+        </div>
+
+        <div class="suggestion-item">
+            <img src="https://i.pravatar.cc/80?img=9">
+            <div>
+                <p class="username">hf_anthony2</p>
+                <p class="subtext">ell_iuna04 sigue esta cuenta</p>
+            </div>
+            <a class="follow-btn">Seguir</a>
+        </div>
+
+        <div class="suggestion-item">
+            <img src="https://i.pravatar.cc/80?img=12">
+            <div>
+                <p class="username">lgabrielaposadas</p>
+                <p class="subtext">joselin987 + 1 más siguen esto</p>
+            </div>
+            <a class="follow-btn">Seguir</a>
+        </div>
+
+        <div class="suggestion-item">
+            <img src="https://i.pravatar.cc/80?img=18">
+            <div>
+                <p class="username">kariis.sx</p>
+                <p class="subtext">apolo10469 sigue esta cuenta</p>
+            </div>
+            <a class="follow-btn">Seguir</a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// Minimal JS to interact with the Java backend server
+async function fetchJson(url, options) {
+    const r = await fetch(url, options);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+}
+
+let usersMap = {};
+async function loadUsers() {
+    const users = await fetchJson('http://localhost:8000/api/users');
+    const sel = document.getElementById('currentUser');
+    const sel2 = document.getElementById('friendToAdd');
+    sel.innerHTML = '';
+    sel2.innerHTML = '';
+    usersMap = {};
+    for (const u of users) {
+        const opt = document.createElement('option');
+        opt.value = u.id; opt.textContent = u.nombre;
+        sel.appendChild(opt);
+        const opt2 = document.createElement('option'); opt2.value = u.id; opt2.textContent = u.nombre; sel2.appendChild(opt2);
+        usersMap[u.id] = u;
+    }
+}
+
+async function addFriend() {
+    const a = document.getElementById('currentUser').value;
+    const b = document.getElementById('friendToAdd').value;
+    if (a == b) { alert('Selecciona otro usuario'); return; }
+    await fetch('http://localhost:8000/api/friends', {method:'POST', body:`userId=${a}&friendId=${b}`});
+    alert('Amistad agregada');
+}
+
+function buildPostElement(p) {
+    const div = document.createElement('div');
+    div.className = 'post';
+    div.innerHTML = `
+        <div class="post-header"><img src="https://i.pravatar.cc/80?img=12" class="avatar"><div class="info"><p class="username">${usersMap[p.autorId] ? usersMap[p.autorId].nombre : 'User ' + p.autorId}</p></div></div>
+        <div class="post-image"><img src="${p.imagen || 'https://via.placeholder.com/800x1000'}" alt="Post"></div>
+        <div class="post-actions"><div class="left"><a class="like-btn">Me gusta (<span class="likes-count">${Object.values(p.reacciones||{}).reduce((a,b)=>a+b,0)}</span>)</a> <a class="comment-btn">Comentar (${(p.comentarios||[]).length})</a></div></div>
+        <div class="post-description"><p>${(p.texto||'')}</p></div>
+    `;
+    // hooks
+    div.querySelector('.like-btn').addEventListener('click', async () => {
+        await fetch(`http://localhost:8000/api/posts/${p.id}/react`, {method:'POST', body: 'tipo=like'});
+        await loadFeed();
+    });
+        div.querySelector('.comment-btn').addEventListener('click', async () => {
+        const comment = prompt('Comentario:');
+        if (comment) {
+                await fetch(`http://localhost:8000/api/posts/${p.id}/comment`, {method:'POST', body:`texto=${encodeURIComponent(comment)}`});
+                await loadFeed();
+        }
+    });
+    return div;
+}
+
+async function loadFeed() {
+    const sort = document.getElementById('sortSelect').value;
+    const posts = await fetchJson('http://localhost:8000/api/posts?sort=' + encodeURIComponent(sort));
+    const feed = document.getElementById('feed');
+    feed.innerHTML = '';
+    for (const p of posts) {
+        feed.appendChild(buildPostElement(p));
+    }
+}
+
+async function createPost() {
+    const sel = document.getElementById('currentUser');
+    const autorId = sel.value || 1;
+    const texto = document.getElementById('newPostText').value;
+    const imagenPath = document.getElementById('newPostImg').value;
+    const body = `autorId=${autorId}&texto=${encodeURIComponent(texto)}&imagenPath=${encodeURIComponent(imagenPath)}`;
+    await fetch('http://localhost:8000/api/posts', {method:'POST', body});
+    document.getElementById('newPostText').value='';
+    document.getElementById('newPostImg').value='';
+    await loadFeed();
+}
+
+async function refresh() {
+    await loadUsers();
+    await loadFeed();
+}
+
+async function doSearch() {
+    const q = document.getElementById('searchBox').value;
+    // search both users and posts
+    const users = await fetchJson('http://localhost:8000/api/search?type=users&q=' + encodeURIComponent(q));
+    const posts = await fetchJson('http://localhost:8000/api/search?type=posts&q=' + encodeURIComponent(q));
+    // show posts first
+    const feed = document.getElementById('feed');
+    feed.innerHTML = '';
+    for (const p of posts) feed.appendChild(buildPostElement(p));
+    if (users.length) {
+        const h = document.createElement('h3'); h.textContent = 'Usuarios encontrados'; feed.appendChild(h);
+        for (const u of users) {
+            const d = document.createElement('div'); d.textContent = u.nombre + ' (' + u.bio + ')'; feed.appendChild(d);
+        }
+    }
+}
+
+refresh().catch(e=>console.error(e));
+</script>
+
+</body>
+</html>
+
